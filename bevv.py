@@ -4,7 +4,27 @@ Client = MongoClient("mongodb://localhost:27017/")
 db = Client["vending_machinn_db"]
 collection = db['products']
 
-def purchase():
+def admin():
+    operate = input('Insert or delete item:')
+    if operate == 'Insert':
+        code = input("Enter new product code: ").strip().upper()
+        name = input("Enter product name: ")
+        price = float(input("Enter price: "))
+        stock = int(input("Enter initial stock: "))
+        collection.insert_one({"code": code, "name": name, "price": price, "stock":stock },)
+    elif operate == 'Delete':
+        code = input("Enter new product code: ").strip().upper()
+        collection.delete_one({'code':code})
+
+def check():
+    password = 'xyz@792'
+    print('pls inter password to open admibn menu')
+    passw = input('Enter the password')
+    if passw ==password:
+        print('admin page')
+        admin()
+
+def purchase(item,quantity):
     amount = item['price']*quantity
     print(amount)
     bill = float(input('pay the bill : '))
@@ -40,5 +60,3 @@ for item in collection.find({"code" : A }):
         purchase()
     else:
         print('out of stock')
-
-
